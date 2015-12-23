@@ -11,3 +11,9 @@ currently includes:
 
 - parameters template file with parameters for spikedetekt and klustakwik
 
+does not yet include: 
+
+batch processing .bat file to traverse multiple sessions with a single click
+
+post-clustering spike-time extraction and re-alignment files to put waveforms and events in common reference time
+
