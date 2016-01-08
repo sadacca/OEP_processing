@@ -13,7 +13,7 @@ filename = dir('*.continuous');
 %get there
 
 
-if length(filename>1) %#ok<*ISMT> % if you've got multiple channels
+if length(filename)>1  % if you've got multiple channels
     
     %open the first channel
     
