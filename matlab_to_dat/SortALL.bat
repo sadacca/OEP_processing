@@ -6,7 +6,7 @@ REM ### [3] run spikedetekt and klustakwik on dat files using .prm & .prb
 REM ### [4] copy clustered data to a new, finalized directory
 
 REM ### #copy params   : TESTED 010816
-REM ### #convert files : UNTESTED
+REM ### #convert files : TESTED CONT 010816
 REM ### #cluster data  : UNTESTED 
 REM ### #move finished : UNTESTED
 
@@ -38,7 +38,7 @@ REM ## copy files to all sub directories from main directory
 			@echo %%G copying completed
         )
 		
-timeout 10
+timeout 3
 
 REM ## convert all datafiles from OEP or KWIK to .dat via MATLAB
 REM ## 3 required functions: 2x "oep_to_*" and 1x "load_open"
@@ -47,8 +47,7 @@ REM ## all in matlab path.  Requires matlab (tested v2014a), octave 4.0 may work
 
 REM # for each directory 
 REM # (where %%G becomes each dirctory name)
-	
-FOR /D %%G IN ("*") DO (
+	FOR /D %%G IN ("*") DO (
 
 	REM # jump into the sub directory \%%G
 	Pushd %CD%\%%G
@@ -56,19 +55,18 @@ FOR /D %%G IN ("*") DO (
 	REM # run the appropriate matlab script for file type in sub directory
 	if exist "*.kwik" (
 			@echo there's a kwik file, matlabbing
-			matlab -nojvm -nodisplay -nosplash -r "OEPKiwk_to_dat"
+			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPKiwk_to_dat"
 	)
 		if exist "*.continuous" (
 			@echo there are continuous files, matlabbing
-			matlab -nojvm -nodisplay -nosplash -r "OEPcont_to_dat"
+			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPcont_to_dat"
 	)
 
 	REM # return to the main directory
 	Popd
 )
 
-timeout 10
-
+timeout 3
 
 REM ## detect spikes from the continuous data in the *.dat file with spikedetekt
 REM ## and cluster data with klustakwik on the basis of the params file and prb file
