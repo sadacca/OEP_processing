@@ -35,13 +35,34 @@ pause
     FOR /D %%g IN ("*") DO (
         Pushd %CD%\%%g
         FOR /D %%f IN ("*") DO (
-            if exist "*.kwik" DO(
+            if exist "*.kwik" (
             	matlab -nojvm -nodisplay -nosplash -r "OEPKiwk_to_dat"
 	    )
-            if exist "*.continuous" DO(
+            if exist "*.continuous" (
             	matlab -nojvm -nodisplay -nosplash -r "OEPcont_to_dat"
 	    )
         )
     Popd
+    )
+pause
+
+
+@echo off
+    Setlocal EnableDelayedExpansion
+    cls
+    set currentDirectory=%CD%
+    FOR /D %%g IN ("*") DO (
+        Pushd %CD%\%%g
+        FOR /D %%f IN ("*") DO (
+            IF exist "*.dat" (
+            	klusta params.prm
+	    
+            ) 
+			IF NOT exist "*.dat" (
+				echo ("there is not a data file -- skipping")
+				)
+			)
+		
+		Popd
     )
 pause
