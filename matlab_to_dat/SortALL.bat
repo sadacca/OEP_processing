@@ -5,7 +5,12 @@
 # e.g. params.prm and probe.prb
 # [2] run spikedetekt and klustakwik
 # on data in all sub directories using .prm & .prb
-# and once analysis is complete, copy 
+# and once analysis is complete, copy to a new directory
+
+# #copy params   : UNTESTED
+# #convert files : UNTESTED
+# #cluster data  : UNTESTED 
+# #move finished : UNTESTED
 
 
 # copy files to all sub directories from main directory
@@ -46,6 +51,12 @@ pause
     )
 pause
 
+
+# detect spikes from the continuous data in the *.dat file with spikedetekt
+# and cluster data with klustakwik on the basis of the params file and prb file
+# which were copied in the first phase of this batch file
+# this, of course requires klustaviewa and all the python 2.7 accessories
+# will eventually be converted to phy when phy is a more mature platform
 
 @echo off
     Setlocal EnableDelayedExpansion
