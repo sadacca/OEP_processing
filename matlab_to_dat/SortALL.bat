@@ -94,27 +94,25 @@ REM ## will eventually be converted to phy when phy is a more mature platform
 
 FOR /D %%g IN ("*") DO (
 	Pushd %CD%\%%g
-	FOR /D %%f IN ("*") DO (
+	
 		IF exist "*.dat" (
 			REM # don't bother to sort if you've got sorted data
-			IF EXIST "*.kwx" CALL :whileEnd2
+			IF NOT EXIST "*.kwx" (
 	
 		REM # if no sorted data, sort the data and wait for a result
 			klusta params.prm
-		
-	REM # Again, need to fudge while loops in batch scripting
-	REM # to wait for file creation before iterating loops
-	REM # lest you overload computer's memory w/ klusta instances
-	
-	REM # create tag for whileLoopStart
+		)
+		)
+
 	
 	REM # if you've got your datafile, end this crazy train
-	if exist *.kwx call :whileLoopStart
+	if NOT exist *.kwx call :whileLoopStart2
 
 	Popd
 )
 
 timeout 10
+
 
 	REM # move all files to a completed analysis folder
 	:whileLoopStart
@@ -126,8 +124,25 @@ timeout 10
 	timeout 60
 	@echo waiting for file production
 	
-	GOTO :whileStart
+	GOTO :whileLoopStart
 	@echo done waiting gettin ready to exit
 	REM # if we're done (whileEnd)
 	:breakLoop
+	exit /b
+	
+	
+	REM # move all files to a completed analysis folder
+	:whileLoopStart2
+	
+	REM # if you've got your datafile, end this crazy train
+    if exist "*.kwx" GOTO :breakLoop2
+	
+	REM # otherwise, wait for a bit	and return to the beginning
+	timeout 60
+	@echo waiting for file production
+	
+	GOTO :whileLoopStart2
+	@echo done waiting gettin ready to exit
+	REM # if we're done (whileEnd)
+	:breakLoop2
 	exit /b
