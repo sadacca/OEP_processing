@@ -36,6 +36,8 @@ REM ## copy files to all sub directories from main directory
 			copy "%currentDirectory%\params.prm" "%%G"
 			copy "%currentDirectory%\OEP_32_Tetrodes.prb" "%%G"
 			@echo %%G copying completed
+			
+			cd %CD%
         )
 		
 timeout 3
@@ -47,15 +49,15 @@ REM ## all in matlab path.  Requires matlab (tested v2014a), octave 4.0 may work
 
 REM # for each directory 
 REM # (where %%G becomes each dirctory name)
-	FOR /D %%G IN ("*") DO (
+
+FOR /D %%G IN ("*") DO (
 
 	REM # jump into the sub directory \%%G
 	Pushd %CD%\%%G
 	
 	REM # if you've got your datafile, don't bother to matlab
-	if exist *.dat (
-		GOTO whileEnd
-		)
+	if not exist "*.dat" (
+		
 		
 	REM # run the appropriate matlab script for file type in sub directory
 	if exist "*.kwik" (
@@ -66,28 +68,21 @@ REM # (where %%G becomes each dirctory name)
 			@echo there are continuous files, matlabbing
 			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPcont_to_dat"
 	)
+	
 	REM # need to fudge while loops in batch scripting
 	REM # to wait for file creation before iterating loops
 	REM # lest you overload computer's memory w/ matlab instances
+	)
 	
+	if not exist "*.dat" call :whileLoopStart
 	REM # create tag for whileLoopStart
-	:whileStart
-	
-	REM # if you've got your datafile, end this crazy train
-	if exist *.dat (
-		GOTO whileEnd
-		)
-		
-	REM # otherwise, wait for a bit	and return to the beginning
-	timeout 45
-	GOTO whileStart
-		
-	REM # if we're done (whileEnd)
-	:whileEnd
+    @echo directory complete
 	REM # return to the main directory
 	Popd
 )
 
+	
+	
 timeout 3
 
 REM ## detect spikes from the continuous data in the *.dat file with spikedetekt
@@ -102,10 +97,8 @@ FOR /D %%g IN ("*") DO (
 	FOR /D %%f IN ("*") DO (
 		IF exist "*.dat" (
 			REM # don't bother to sort if you've got sorted data
-			IF EXIST *.kwx (
-			GOTO whileEnd2
-			)
-		
+			IF EXIST "*.kwx" CALL :whileEnd2
+	
 		REM # if no sorted data, sort the data and wait for a result
 			klusta params.prm
 		
@@ -114,30 +107,27 @@ FOR /D %%g IN ("*") DO (
 	REM # lest you overload computer's memory w/ klusta instances
 	
 	REM # create tag for whileLoopStart
-	:whileStart2
 	
 	REM # if you've got your datafile, end this crazy train
-	if exist *.kwx (
-		GOTO whileEnd
-		)
-		
-	REM # otherwise, wait for a while and return to the beginning
-	timeout 180
-	GOTO whileStart2
-	
-	
-		)
-		
-		IF NOT exist "*.dat" (
-			echo ("there is not a data file -- skipping")
-			)
-		)
-		
-	REM # finished with this directory, on to the next
-	:whileEnd2
+	if exist *.kwx call :whileLoopStart
+
 	Popd
 )
 
 timeout 10
 
-REM # move all files to a completed analysis folder
+	REM # move all files to a completed analysis folder
+	:whileLoopStart
+	
+	REM # if you've got your datafile, end this crazy train
+    if exist "*.dat" GOTO :breakLoop
+	
+	REM # otherwise, wait for a bit	and return to the beginning
+	timeout 60
+	@echo waiting for file production
+	
+	GOTO :whileStart
+	@echo done waiting gettin ready to exit
+	REM # if we're done (whileEnd)
+	:breakLoop
+	exit /b
