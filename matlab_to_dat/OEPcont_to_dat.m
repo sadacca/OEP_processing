@@ -7,7 +7,7 @@ function OEPcont_to_dat()
 % last modified by ...
 
 %% get the data
-filename = dir('*.continuous');
+filename = dir('*CH*.continuous');
 
 %% load the data
 %get there
