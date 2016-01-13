@@ -51,7 +51,12 @@ REM # (where %%G becomes each dirctory name)
 
 	REM # jump into the sub directory \%%G
 	Pushd %CD%\%%G
- 
+	
+	REM # if you've got your datafile, don't bother to matlab
+	if exist *.dat (
+		GOTO whileEnd
+		)
+		
 	REM # run the appropriate matlab script for file type in sub directory
 	if exist "*.kwik" (
 			@echo there's a kwik file, matlabbing
@@ -61,7 +66,24 @@ REM # (where %%G becomes each dirctory name)
 			@echo there are continuous files, matlabbing
 			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPcont_to_dat"
 	)
-
+	REM # need to fudge while loops in batch scripting
+	REM # to wait for file creation before iterating loops
+	REM # lest you overload computer's memory w/ matlab instances
+	
+	REM # create tag for whileLoopStart
+	:whileStart
+	
+	REM # if you've got your datafile, end this crazy train
+	if exist *.dat (
+		GOTO whileEnd
+		)
+		
+	REM # otherwise, wait for a bit	and return to the beginning
+	timeout 45
+	GOTO whileStart
+		
+	REM # if we're done (whileEnd)
+	:whileEnd
 	REM # return to the main directory
 	Popd
 )
@@ -79,30 +101,43 @@ FOR /D %%g IN ("*") DO (
 	Pushd %CD%\%%g
 	FOR /D %%f IN ("*") DO (
 		IF exist "*.dat" (
+			REM # don't bother to sort if you've got sorted data
+			IF EXIST *.kwx (
+			GOTO whileEnd2
+			)
+		
+		REM # if no sorted data, sort the data and wait for a result
 			klusta params.prm
+		
+	REM # Again, need to fudge while loops in batch scripting
+	REM # to wait for file creation before iterating loops
+	REM # lest you overload computer's memory w/ klusta instances
 	
-		) 
+	REM # create tag for whileLoopStart
+	:whileStart2
+	
+	REM # if you've got your datafile, end this crazy train
+	if exist *.kwx (
+		GOTO whileEnd
+		)
+		
+	REM # otherwise, wait for a while and return to the beginning
+	timeout 180
+	GOTO whileStart2
+	
+	
+		)
+		
 		IF NOT exist "*.dat" (
 			echo ("there is not a data file -- skipping")
 			)
 		)
-	
+		
+	REM # finished with this directory, on to the next
+	:whileEnd2
 	Popd
 )
 
 timeout 10
 
 REM # move all files to a completed analysis folder
-
-		REM # for each directory 
-		REM # (where %%G becomes each dirctory name)
-        
-		FOR /D %%G IN ("*") DO (
-		
-		    REM # copy the pertinant files and say that it's done
-        
-			copy "%currentDirectory%\params.prm" "%%G"
-			copy "%currentDirectory%\32chTetrodes.prb" "%%G"
-			@echo %%G copying completed
-        )
-		
