@@ -21,10 +21,10 @@ if length(filename)>1  % if you've got multiple channels
     
     
     %initialize a big matrix for the data
-    incoming_data = zeros(length(filename),length(first_channel));
+    incoming_data = zeros(length(filename),length(first_channel),'int16');
     
     %write the first channel to the full data matrix
-    incoming_data(1,:)= first_channel;
+    incoming_data(1,:)= int16(first_channel);
     
     
     
@@ -32,8 +32,9 @@ if length(filename)>1  % if you've got multiple channels
         
 
     
-    [incoming_data(ii,:), timestamps, info_continuous] = load_open_ephys_data_faster(filename(ii).name);
+    [next_channel timestamps, info_continuous] = load_open_ephys_data_faster(filename(ii).name);
     
+    incoming_data(ii,:)=int16(next_channel);
         
     end
     
