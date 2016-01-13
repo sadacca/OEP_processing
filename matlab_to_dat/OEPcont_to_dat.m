@@ -70,3 +70,5 @@ else % else if you only have one channel or file
     disp(['file ',filename.name,' converted'])
 end
 end
+
+exit
