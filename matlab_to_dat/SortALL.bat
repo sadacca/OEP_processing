@@ -106,7 +106,7 @@ FOR /D %%g IN ("*") DO (
 
 	
 	REM # if you've got your datafile, end this crazy train
-	if NOT exist *.kwx call :whileLoopStart2
+	REM if NOT exist *.kwx call :whileLoopStart2
 
 	Popd
 )
