@@ -48,7 +48,7 @@ end
 %slice out good waveforms into a spike.wave data structure
 for cl = 1:length(isgood)
     spike(clusterindex(cl)).waves = allwaveforms(:,:, clusternumbers==isgood(cl));
-    spike(clusterindex(cl)).times = allspiketimes(:,:,clusternumbers==isgood(cl));
+    spike(clusterindex(cl)).times = allspiketimes(clusternumbers==isgood(cl));
 end
 end
 
