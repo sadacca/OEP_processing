@@ -74,6 +74,8 @@ FOR /D %%G IN ("*") DO (
 	REM # lest you overload computer's memory w/ matlab instances
 	)
 	
+	@echo %%G
+	
 	if not exist "*.dat" call :whileLoopStart
 	REM # create tag for whileLoopStart
     @echo directory complete
@@ -97,11 +99,9 @@ FOR /D %%g IN ("*") DO (
 	
 		IF exist "*.dat" (
 			REM # don't bother to sort if you've got sorted data
-			IF NOT EXIST "*.kwx" (
-	
-		REM # if no sorted data, sort the data and wait for a result
-			klusta params.prm
-		)
+			
+			klusta --overwrite params.prm
+		
 		)
 
 	

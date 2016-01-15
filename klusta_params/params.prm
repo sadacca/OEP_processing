@@ -1,14 +1,14 @@
 ##########################
 # SpikeDetekt parameters #
 ##########################
-experiment_name = 'sampledat'
+experiment_name = 'sampledata'
 #raw_data_files = experiment_name + '.raw.kwd'
 raw_data_files = experiment_name + '.dat'
 prb_file = 'OEP_32_tetrodes.prb'
 nbits = 16
 voltage_gain = 10.
 
-sample_rate = 30000
+sample_rate = 25000
 nchannels = 32
 
 
@@ -58,9 +58,9 @@ pca_nwaveforms_max = 10000
 # KlustaKwik parameters #
 #########################
 MaskStarts = 100
-#MinClusters = 100 
-#MaxClusters = 110
-MaxPossibleClusters =  500
+#MinClusters = 20
+#MaxClusters = 30
+MaxPossibleClusters =  150
 FullStepEvery =  10
 MaxIter = 10000
 RandomSeed =  654
@@ -69,7 +69,7 @@ SplitFirst = 20
 SplitEvery = 100 
 PenaltyK = 0
 PenaltyKLogN = 1
-Subset = 1
+Subset = 10
 PriorPoint = 1
 SaveSorted = 0
 SaveCovarianceMeans = 0
