@@ -29,10 +29,13 @@ if length(filename)>1  % if you've got multiple channels
     incoming_data(ii,:)=int16(next_channel);
         
     end
+end
     
-    %plot 2 seconds of data
+    %plot 1 second of data
     
-    timevec = 0:1/25000:2;
-    timestart = 40000;
-    
-    plot(timevec,incoming_data(:,timestart:timestart+length(timevec)))
+    timevec = 0:1/25000:.5;
+    timestart = 60000;
+    mm = size(incoming_data,1);
+    for ii = 1:size(incoming_data,1)
+    plot(timevec,ii*5+zscore(single(incoming_data(ii,timestart:timestart+length(timevec)-1))),'color',[ii/mm ii/mm 1/ii]),hold on
+    end
