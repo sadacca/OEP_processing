@@ -54,6 +54,6 @@ end
 
 %% save  the spike file
 
-save(spike,[filedirectory(1:10),' extracted tms and wvs.mat)
+save(spike,[filedirectory(1:10),'_extracted_tms_and_wvs.mat'])
 
 
