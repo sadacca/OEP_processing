@@ -1,17 +1,20 @@
-# OEP_processing
-initial data processing scripts and functions for wrangling open-ephys data formats to formats usable for a range of spike sorting solutions (e.g. *.dat for klustasuite or phy), and batch scripts for calling both data formatting functions and then pre-processing this data (spike detection, waveform clustering), including template 'parameters' and 'probe'files required for running klustasuite and/or phy 
+# OEP_processing #
+initial data processing scripts and functions for wrangling open-ephys data formats to formats usable for a range of spike sorting solutions (e.g. *.dat for klustasuite or phy), and batch scripts for calling both data formatting functions, pre-processing this data (spike detection, waveform clustering), and then simple plotting and analysis tools.  This set includes template 'parameters' and 'probe'files required for running klustasuite and/or phy and a small handful of dependent functions developed elsewhere for ease of use.
+
+---
 
 currently includes:
 
-- matlab code to convert .continuous and .kwik files to .dat files (including one dependent function for reading open-ephys headers taken from open-ephys/analysis-tools)
+* matlab code to convert .continuous and .kwik files to .dat files (including one dependent function for reading open-ephys headers taken from open-ephys/analysis-tools)
 
-- tetrode-based 'probe' file for sorting 8-tetrode date (with layout according to open-ephys standard 32ch EIB)
+* tetrode-based 'probe' file for sorting 8-tetrode date (with layout according to open-ephys standard 32ch EIB correctly and 'backwards')
 
-- 16ch-based probe file for a single-shank 16ch silicone probe
+* 16ch-based probe file for a single-shank 16ch silicone probe
 
-- parameters template file with parameters for spikedetekt and klustakwik
+* parameters template file with parameters for spikedetekt and klustakwik
 
-does not yet include: 
+* post-clustering spike-time and waveform shape extraction from klustaviewa/klustakwik .kwik and .kwx
 
-post-clustering spike-time extraction and re-alignment files to put waveforms and events in common reference time
+* batch file for pre-processing, detecting spikes, and clustering 'raw' data from a handful of directories with a single click 
+
 
