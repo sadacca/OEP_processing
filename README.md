@@ -3,11 +3,11 @@ initial data processing scripts and functions for wrangling open-ephys data form
 
 ---
 
-currently includes:
+### currently includes:
 
 * matlab code to convert .continuous and .kwik files to .dat files (including one dependent function for reading open-ephys headers taken from open-ephys/analysis-tools)
 
-* tetrode-based 'probe' file for sorting 8-tetrode date (with layout according to open-ephys standard 32ch EIB correctly and 'backwards')
+* tetrode-based 'probe' file for sorting 8-tetrode data (with layout according to open-ephys standard 32ch EIB correctly and 'backwards')
 
 * 16ch-based probe file for a single-shank 16ch silicone probe
 
