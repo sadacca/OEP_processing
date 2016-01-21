@@ -14,10 +14,19 @@ filename = dir('*CH*.continuous');
 
 
 if length(filename)>1  % if you've got multiple channels
+    for ii = 1:length(filename)
+        for jj = 1:length(filename)
+            if regexp(filename(ii).name,['CH',num2str(jj),'.'])
+                fileindex(ii)=jj;
+            end
+        end
+    end
+    
+    [xx fileorder]=sort(fileindex);
     
     %open the first channel
     
-    [first_channel, timestamps, info_continuous] = load_open_ephys_data_faster(filename(1).name);
+    [first_channel, timestamps, info_continuous] = load_open_ephys_data_faster(filename(fileorder(1)).name);
     
     
     %initialize a big matrix for the data
@@ -30,11 +39,11 @@ if length(filename)>1  % if you've got multiple channels
     
     for ii = 2:length(filename) %repeat for the remainder of channels
         
-
-    
-    [next_channel timestamps, info_continuous] = load_open_ephys_data_faster(filename(ii).name);
-    
-    incoming_data(ii,:)=int16(next_channel);
+        
+        
+        [next_channel timestamps, info_continuous] = load_open_ephys_data_faster(filename(fileorder(ii)).name);
+        
+        incoming_data(ii,:)=int16(next_channel);
         
     end
     
@@ -70,5 +79,3 @@ else % else if you only have one channel or file
     disp(['file ',filename.name,' converted'])
 end
 end
-
-exit
