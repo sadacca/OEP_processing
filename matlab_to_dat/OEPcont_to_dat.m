@@ -78,6 +78,7 @@ else % else if you only have one channel or file
     %say that the job is done
     disp(['file ',filename.name,' converted'])
 end
+exit
 end
 
-exit
+
