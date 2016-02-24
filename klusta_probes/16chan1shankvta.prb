@@ -3,7 +3,7 @@ channel_groups = {
     0:
         {   
             # List of channels to keep for spike detection.
-            'channels': range(32),
+            'channels': range(16),
             
             # Adjacency graph. Dead channels will be automatically discarded
             # by considering the corresponding subgraph.
