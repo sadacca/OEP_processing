@@ -1,4 +1,4 @@
-
+tic
 %% get the data
 filename = dir('*CH*.continuous');
 
@@ -42,11 +42,11 @@ end
     
     %% plot 1 second of data, and tetrode relatedness
     
-        timevec = 0:1/fs:10;
+      
     timestart = 100000;
     mm = size(incoming_data,1);
-    fs = 25000; % sampling frequency
-    
+    fs = 30000; % sampling frequency
+      timevec = 0:1/fs:10;
     
     
 % Design and apply the bandpass filter
@@ -102,3 +102,4 @@ subplot(2,2,2)
     
 subplot(2,2,4)
 imagesc(within_tetrode_correlation(tetbkind,tetbkind).^4)
+toc
