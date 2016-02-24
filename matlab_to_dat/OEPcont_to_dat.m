@@ -57,7 +57,7 @@ if length(filename)>1  % if you've got multiple channels
     fclose(fid);
     
     %say that the job is done
-    disp(['files ',filename(1).name,' to ',filename(end).name,' converted'])
+    disp(['files ',filename(1).name,' to ',filename(fileorder(end)).name,' converted'])
     
     
 else % else if you only have one channel or file
