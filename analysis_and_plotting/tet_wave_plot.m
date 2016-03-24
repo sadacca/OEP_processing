@@ -8,10 +8,10 @@ clr = [0,0.4470,0.7410;...
 mm=length(spike);
 meanwave = zeros(length(spike),4,32);
 for ii = 1:length(spike) %for each neuron
-    %figure;
+    figure;
     for jj = 1:4 %tetrodes
         meanwave(ii,jj,:)=squeeze(mean(spike(ii).waves(jj,:,:),3));
-     %plot(squeeze(meanwave(ii,jj,:)),'color',clr(jj,:)),hold on
+     plot(squeeze(meanwave(ii,jj,:)),'color',clr(jj,:)),hold on
 
         [minval(ii,jj) mintime(ii,jj)] = min(meanwave(ii,jj,:));
         [maxval1(ii,jj) maxtime1(ii,jj)] = max(meanwave(ii,jj,1:mintime(ii,jj)));
