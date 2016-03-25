@@ -12,7 +12,6 @@ filename = dir('*CH*.continuous');
 %% load the data
 
 
-if length(filename)>1  % if you've got multiple channels
     for ii = 1:length(filename)
         for jj = 1:length(filename)
             if regexp(filename(ii).name,['CH',num2str(jj),'.'])
@@ -54,31 +53,33 @@ if length(filename)>1  % if you've got multiple channels
     
     %% Design and apply the bandpass filter
     
-    fs = info_continuous.header.samplerate; % sampling frequency
+    %fs = info_continuous.header.sampleRate; % sampling frequency
     
-    fcutlow  = 1000;
+    %fcutlow  = 60;
     %fcuthigh = 8000;
     
-    d = designfilt('highpassiir', ...       % Response type
-        'StopbandFrequency',fcutlow, ...     % Frequency constraints
-        'PassbandFrequency',fcutlow+200, ...
-        'StopbandAttenuation',400, ...    % Magnitude constraints
-        'PassbandRipple',40, ...
-        'DesignMethod','cheby1', ...     % Design method
-        'MatchExactly','stopband', ...   % Design method options
-        'SampleRate',fs);               % Sample rate
-    
-    
+%     d = designfilt('highpassiir', ...       % Response type
+%         'StopbandFrequency',fcutlow, ...     % Frequency constraints
+%         'PassbandFrequency',fcutlow+100, ...
+%         'StopbandAttenuation',40, ...    % Magnitude constraints
+%         'PassbandRipple',.3, ...
+%         'DesignMethod','cheby1', ...     % Design method
+%         'MatchExactly','stopband', ...   % Design method options
+%         'SampleRate',fs);               % Sample rate
+     
+    [b,a] = butter(4, [0.007 0.5]);
+
     for ii = 1:length(fileindex)
         
-        s = squeeze(single(incoming_data(ii,:)));
-        x = filtfilt(d,s);
+       % s = squeeze(single(incoming_data(ii,:)));
+        x= filtfilt(b,a,squeeze(double(incoming_data(ii,:))));
+
         
         
         %% chop out all the big stuff: set hard floors and ceilings @ +/- 200
         
         x(x>200)=200;
-        x(x<200)=200;
+        x(x<-200)=-200;
         
         incoming_data(ii,:)=int16(x);
         
@@ -98,6 +99,6 @@ if length(filename)>1  % if you've got multiple channels
     
     
     exit
-end
+
 
 
