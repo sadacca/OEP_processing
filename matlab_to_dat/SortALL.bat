@@ -60,13 +60,10 @@ FOR /D %%G IN ("*") DO (
 		
 		
 	REM # run the appropriate matlab script for file type in sub directory
-	if exist "*.kwik" (
-			@echo there's a kwik file, matlabbing
-			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPKiwk_to_dat"
-	)
+
 		if exist "*.continuous" (
 			@echo there are continuous files, matlabbing
-			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPcont_to_dat"
+			C:\"Program Files"\MATLAB\R2014a\bin\matlab.exe -nojvm -nodesktop -nosplash -nodisplay -r "OEPcont_to_datAVGREF"
 	)
 	
 	REM # need to fudge while loops in batch scripting

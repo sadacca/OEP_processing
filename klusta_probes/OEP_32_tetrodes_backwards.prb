@@ -38,7 +38,7 @@ channel_groups = {
                 },
 			
 			2: {
-                "channels": [16,18,14,15],  # list of channels to keep
+                "channels": [16,17,14,15],  # list of channels to keep
                 
 				"graph": [
 		(16, 18), 
@@ -57,7 +57,7 @@ channel_groups = {
                 },
            
 		   3: {
-                "channels": [17,19,20,29],
+                "channels": [18,19,20,28],
                 "graph": [
 		(17, 19), 
 		(17, 20),
@@ -75,7 +75,7 @@ channel_groups = {
                 },
 			
 			4: {
-                "channels": [21,22,23,28],  # list of channels to keep
+                "channels": [21,22,23,29],  # list of channels to keep
                
 			   "graph": [
 		(21, 22), 
