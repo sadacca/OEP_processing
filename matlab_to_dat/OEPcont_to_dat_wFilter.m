@@ -21,10 +21,6 @@ filename = dir('*CH*.continuous');
     
     [xx fileorder]=sort(fileindex);
     
-    %open the first channel
-    
-    [first_channel, timestamps, info_continuous] = load_open_ephys_data_faster(filename(fileorder(1)).name);
-    
     
     %initialize a big matrix for the data
     incoming_data = zeros(length(filename),length(first_channel),'int16');
@@ -36,18 +32,24 @@ filename = dir('*CH*.continuous');
     
     for ii = 2:length(filename) %repeat for the remainder of channels
         
-        
-        
-        [next_channel timestamps, info_continuous] = load_open_ephys_data_faster(filename(fileorder(ii)).name);
+        [next_channel, timestamps, info_continuous] = load_open_ephys_data_faster(filename(fileorder(ii)).name);
         
         incoming_data(ii,:)=int16(next_channel);
         
     end
     
-    incoming_data = incoming_data*info_continuous.header.bitVolts;
+    clear timestamps,clear next_channel
     
-    clear next_channel
-    clear timestamps
+    %create a common average reference
+    
+    ref_channel = squeeze(mean(incoming_data,1,'native'));
+    
+    % subtract the mean from all channels
+    
+    for ii = 1:length(filename)
+        incoming_data(ii,:) = incoming_data(ii,:) - ref_channel;
+    end
+    
     
     
     %% Design and apply the bandpass filter
@@ -77,8 +79,8 @@ filename = dir('*CH*.continuous');
         
         %% chop out all the big stuff: set hard floors and ceilings @ +/- 200
         
-        x(x>200)=200;
-        x(x<-200)=-200;
+        x(x>800)=800;
+        x(x<-800)=-800;
         
         incoming_data(ii,:)=int16(x);
         

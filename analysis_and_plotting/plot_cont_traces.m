@@ -52,7 +52,7 @@ end
 % Design and apply the bandpass filter
 x = zeros(size(incoming_data(:,timestart:timestart+length(timevec)-1)));
 
-fcutlow  = 4500;
+fcutlow  = 1000;
 fcuthigh = 6000;
 
 d = designfilt('highpassiir', ...       % Response type
@@ -78,13 +78,28 @@ end
     
     subplot(2,1,2)
      within_tetrode_correlation = corr(zscore(single(incoming_data(:,timestart:20:timestart+length(timevec)-1)))','type','Pearson');
-imagesc(within_tetrode_correlation(:,:).^4)
+imagesc(within_tetrode_correlation(:,:).^2)
   
     
     %% resort and plot data based on forwards and backwards tetrode layouts
     
-    tetind=[19,24,25,26,18,27,28,29,0,2,30,31,1,3,4,13,5,6,7,12,8,9,10,11,14,15,16,17,20,21,22,23]+1; % indexing for forward tetrodes
-    tetbkind=[3,8,9,10,2,11,12,13,16,18,14,15,17,19,20,29,21,22,23,28,24,25,26,27,30,31,0,1,4,5,6,7]+1; % indexing for backwards tetrodes
+    tetind=[19,24,25,26,...
+        18,27,28,29,...
+        0,1,30,31,...
+        2,3,4,13,...
+        5,6,7,12,...
+        8,9,10,11,...
+        14,15,16,17,...
+        20,21,22,23]+1; % indexing for forward tetrodes
+    tetbkind=[3,8,9,10,...TETA
+        2,11,12,13,...TETB
+        16,17,14,15,...TETC
+        18,19,20,28,...TETD
+        21,22,23,29,...TETE
+        24,25,26,27,...TETF
+        30,31,0,1,...TETG
+        4,5,6,7]+1;...TETH % indexing for backwards tetrodes
+        
     within_tetrode_correlation; corr(zscore(single(incoming_data(:,timestart:10:timestart+length(timevec)-1)))');
     figure;subplot(2,2,1);
   
@@ -93,7 +108,7 @@ imagesc(within_tetrode_correlation(:,:).^4)
     end
     
     subplot(2,2,3)
-    imagesc(within_tetrode_correlation(tetind,tetind).^4)
+    imagesc(within_tetrode_correlation(tetind,tetind).^2)
 subplot(2,2,2)
 
     for ii = 1:size(incoming_data,1)
@@ -101,5 +116,45 @@ subplot(2,2,2)
     end
     
 subplot(2,2,4)
-imagesc(within_tetrode_correlation(tetbkind,tetbkind).^4)
+imagesc(within_tetrode_correlation(tetbkind,tetbkind).^2)
 toc
+
+%% below is code if you want ot compare off diagonal correlation values to 
+% determine if the electrodes were backwards or forwards
+
+% 
+% % squareMatrix=within_tetrode_correlation.^2;
+% % squareMatrix=within_tetrode_correlation(tetind,tetind).^2;
+% squareMatrix=within_tetrode_correlation(tetbkind,tetbkind).^2;
+% 
+% 
+% 
+% [M, N] = size(squareMatrix);
+% LLUR0_ULLR1 =1;
+% 
+% diagSum = zeros(1, M+N-1);
+% 
+% if LLUR0_ULLR1 == 1
+%     squareMatrix = rot90(squareMatrix, -1);
+% end
+% 
+% for i = 1:length(diagSum)
+%     if i <= M
+%         countUp = 1;
+%         countDown = i;
+%         while countDown ~= 0
+%             diagSum(i) = squareMatrix(countUp, countDown) + diagSum(i);
+%             countUp = countUp+1;
+%             countDown = countDown-1;
+%         end
+%     end
+%     if i > M
+%         countUp = i-M+1;
+%         countDown = M;
+%         while countUp ~= M+1
+%             diagSum(i) = squareMatrix(countUp, countDown) + diagSum(i);
+%             countUp = countUp+1;
+%             countDown = countDown-1;
+%         end
+%     end
+% end
