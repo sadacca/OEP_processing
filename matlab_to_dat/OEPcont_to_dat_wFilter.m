@@ -1,9 +1,8 @@
 function OEPcont_to_dat_wFilter()
 % transmute an OEP .continuous file to a raw .dat file
 % no input parameters
-% subtracts AUX channels (3, hardcoded)
 %
-% written by Brian Sadacca 12-9-2015
+% written by Brian Sadacca 3-21-2016
 % last modified by ...
 
 %% get the data
