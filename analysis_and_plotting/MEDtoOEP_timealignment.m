@@ -20,28 +20,20 @@ cd(oepfiledirectory)
 
 load(oepfilename);
 
-%% align timestamps
-% first find the medpc timestamps that correspond with onset of TTLs
-% for yann's 2016 spring recordings that's 1, 1001, and 2001
+%% find and scale timestamps
 
-medPConTimes = eventtimes(eventstamps == 1 | eventstamps == 1001 | eventstamps == 2001);
-medOEPdiff = medPConTimes - OEPon; %% ARE BOTH SCALED APPROPRIATELY?!?!
-
-%% validate there is no shift in timestamps across session
-
-uniquecheck=unique(medOEPdiff); 
-
-if uniquecheck>1
-	error('DANGER: there may be data loss or a clock shift between TTLs')
-end
+medPConTimes = sort(medeventtimes(medeventstamps == 1 | medeventstamps == 1001 | medeventstamps == 2001));
+medPConTimes = medPConTimes/100; %rescaling to seconds
 
 %% shift medtimes to match OEP clock
 
-eventtimes = eventtimes - medOEPdiff;
+[slopeandoffset]=polyfit(sort(medPConTimes),OEPon,1); %% there may be a bit of drift (80ms per hour of recording)
+medeventtimes = (medeventtimes/100)*slopeandoffset(1) + slopeandoffset(2);
 
-save([medfilename],'OEPaligned.mat',eventstamps,eventtimes)
 
-exit
+save([medfilename(1:end-4),'OEPaligned.mat'],'medevent*')
+
+
 
 
 
