@@ -113,7 +113,7 @@ ratname = cellfun(@(x) x,eventdata(nameindex(ratindex),2));
 eventstamps = eventstamps(:);
 eventtimes = eventtimes(:);
 
-save(['rat_',ratname,'_day_',filename(2:end)],eventstamps,eventtimes)
+save(['rat_',num2str(ratname),'_day_',filename(2:end),'.mat'],eventstamps,eventtimes)
 clear eventstamps eventtimes ratname
 end
 %plot the events, if you'd like
