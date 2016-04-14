@@ -119,6 +119,6 @@ clear eventstamps eventtimes ratname
 end
 %plot the events, if you'd like
 %scatter(eventtimes,eventstamps)
-exit
+
 
 
