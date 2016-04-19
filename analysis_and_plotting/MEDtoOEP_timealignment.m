@@ -25,6 +25,11 @@ load(oepfilename);
 medPConTimes = sort(medeventtimes(medeventstamps == 1 | medeventstamps == 1001 | medeventstamps == 2001));
 medPConTimes = medPConTimes/100; %rescaling to seconds
 
+if medPConTimes == 101
+	medPConTimes = medPConTimes(1:end-1);
+end
+
+
 %% shift medtimes to match OEP clock
 
 [slopeandoffset]=polyfit(sort(medPConTimes),OEPon,1); %% there may be a bit of drift (80ms per hour of recording)
