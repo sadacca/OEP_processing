@@ -33,8 +33,9 @@ REM ## copy files to all sub directories from main directory
 		
 		    REM # copy the pertinant files and say that it's done
         
-			copy "%currentDirectory%\params.prm" "%%G"
-			copy "%currentDirectory%\OEP_32_Tetrodes.prb" "%%G"
+			copy "%currentDirectory%\params1.prm" "%%G"
+			copy "%currentDirectory%\params2.prm" "%%G"
+			copy "%currentDirectory%\BS_32_tetrodes.prb" "%%G"
 			@echo %%G copying completed
 			
 			cd %CD%
@@ -97,7 +98,24 @@ FOR /D %%g IN ("*") DO (
 		IF exist "*.dat" (
 			REM # don't bother to sort if you've got sorted data
 			
-			klusta --overwrite params.prm
+			klusta --overwrite params1.prm
+		
+		)
+
+	
+	REM # if you've got your datafile, end this crazy train
+	REM if NOT exist *.kwx call :whileLoopStart2
+
+	Popd
+)
+
+FOR /D %%g IN ("*") DO (
+	Pushd %CD%\%%g
+	
+		IF exist "*.dat" (
+			REM # don't bother to sort if you've got sorted data
+			
+			klusta --overwrite params2.prm
 		
 		)
 
