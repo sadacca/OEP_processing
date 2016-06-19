@@ -38,7 +38,7 @@ for hh = 1:headstage_num
     
     
     %initialize a big matrix for the data
-    incoming_data = zeros(length(filename),length(first_channel),'int16');
+    incoming_data = zeros(32,length(first_channel),'int16');
     
     %write the first channel to the full data matrix
     incoming_data(1,:)= int16(first_channel);
@@ -58,9 +58,10 @@ for hh = 1:headstage_num
     
     %create a common average reference
     
-    ref_channel = squeeze(mean(incoming_data,1,'native'));
+    ref_channel = squeeze(sum(incoming_data,1,'double')/32);
     
     % subtract the mean from all channels
+    ref_channel = int16(ref_channel);
     
     for ii = 1:32
         incoming_data(ii,:) = incoming_data(ii,:) - ref_channel;
@@ -69,7 +70,7 @@ for hh = 1:headstage_num
     clear ref_channel
     
     %initialize a new .dat file
-    fid=fopen('sampledata',num2str(hh),'.dat','w+');
+    fid=fopen(['sampledata',num2str(hh),'.dat'],'w+');
     
     % write data to raw .dat file
     fwrite(fid,incoming_data(:,:),'int16');
