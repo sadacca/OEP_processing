@@ -44,4 +44,11 @@ spikedetekt = dict(
     pca_n_waveforms_max=10000,
 )
 
-klustakwik2 = dict()
+klustakwik2 = dict(
+
+
+     max_iterations=500,
+     num_starting_clusters=50,
+     max_possible_clusters=75,
+    
+)
