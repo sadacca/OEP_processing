@@ -105,7 +105,8 @@ else  %%for Automated input
             RUNtypes{2} = {'Alien','Chord','Sweep','Wobble'};
             RUNtypes{3} = {'Future','Train','Tone','Pulsed'};
             RUNtypes{4} = {'Siren','Tone','WN','Click'};
-            
+            RUNtypes{7} = {'Siren','Tone','WN','Click'};
+             
             for ii = 1:4
                 xxx{ii}=animaltextinput{ii+1}{NUMB};
             end
@@ -130,7 +131,7 @@ else  %%for Automated input
             end
             
             
-            fiD = fopen(['RUN1SITE.csv']);
+            fiD = fopen(['RUN7SITE.csv']);
             animaltextinput=textscan(fiD,'%s%s%s%s%s','Delimiter',',;');
             %NUMB = input(['which rat is this - ', animaltextinput{1}{2:end}','?:']);
             
@@ -143,7 +144,7 @@ else  %%for Automated input
             [xx NUMB] = find(CSVNumbers==animalIDnumber);
             
             RUNsites{1} = {'VTA','VS','OFC','BLA'};
-            
+           % RUNsites{7} = {'VTA','VS','OFC','BLA'};
             
             for ii = 1:2
                 xxx{ii}=animaltextinput{ii+1}{NUMB};
@@ -177,29 +178,30 @@ for pp=1:max(size(subtype))
     %%%%or files of interest
     cd(pathname);
     
-    indat = load(filename{pp})
-    e_stamps = indat(:,2);
+    indat = load(filename{pp});
+    e_stamps = indat(:,2)/1000;
     strobedvals = indat(:,1);
     
     trialstart = 20; %seconds pre-432
     trialstop = 60; %seconds pre-432
     
-    UvLightOff = 431;  %the end of a trial is the offset of the first UV light!!
+    UvLightOff = 420;  %the end of a trial is the offset of the first UV light!!
     
+   nosepoke_strobed = e_stamps(strobedvals==402);
     trialend_strobed=e_stamps(strobedvals==UvLightOff);
-    if isempty(trialend_strobed)
-        strobedvals = strobedvals -512;
-        trialend_strobed=e_stamps(strobedvals==UvLightOff);
-        warning(['error with strobedvals in file, trying to shift values',filename{pp}])
-        if isempty(trialend_strobed)
+%     if isempty(trialend_strobed)
+%         strobedvals = strobedvals -512;
+%         trialend_strobed=e_stamps(strobedvals==UvLightOff);
+%         warning(['error with strobedvals in file, trying to shift values',filename{pp}])
+        if isempty(nosepoke_strobed)
             strobedvals = strobedvals +1;
             trialend_strobed=e_stamps(strobedvals==UvLightOff);
-            warning(['error with strobedvals in file, trying to shift values. again.',filename{pp}])
+            warning(['error with strobedvals in file, trying to shift values.',filename{pp}])
         end
-        if isempty(trialend_strobed)
-            warning(['error with strobedvals in file, this file needs individual help',filename{pp}])
-        end
-    end
+%         if isempty(trialend_strobed)
+%             warning(['error with strobedvals in file, this file needs individual help',filename{pp}])
+%         end
+%     end
     
     trialend_strobed = trialend_strobed-20; % this is a kludgy fix to shift
     
@@ -212,11 +214,11 @@ for pp=1:max(size(subtype))
     
     
     %% find and load the channels with spikes and grab channel names
-    try
-        [t_stamps w_forms]=plx_info(filename{pp},1); %% note: samp. freq. = 40kHz
-    catch
-        [t_stamps w_forms]=plx_info(filename,1); %% note: samp. freq. = 40kHz
-    end
+%     try
+%         [t_stamps w_forms]=plx_info(filename{pp},1); %% note: samp. freq. = 40kHz
+%     catch
+%         [t_stamps w_forms]=plx_info(filename,1); %% note: samp. freq. = 40kHz
+%     end
     
     %% split the spikes into trials on the basis of events
     
@@ -237,7 +239,7 @@ for pp=1:max(size(subtype))
                 eventstime_trial = e_stamps(trialend_strobed(tr)-trialstart<e_stamps&e_stamps<trialend_strobed(tr)+trialstop);
             end
             
-            if runtype == 1
+            if runtype == 1 || runtype == 7
                 
                 if ~isempty(find(eventstamp_trial==424,1)) %Clicker
                     trialcue = 4;
@@ -399,11 +401,11 @@ for pp=1:max(size(subtype))
     
     try
         jjct=0;
-        cueon = 20;
-        cueoff = 30;
+        cueon = 40;
+        cueoff = 50;
         % figure(pp+10);
         
-        for ii = 1:1:size(pokein,2)
+        for ii = 3:1:size(pokein,2)
             
             for jj = 1:length(pokein(ii).trials)
                 
@@ -431,7 +433,7 @@ for pp=1:max(size(subtype))
                         inptime = pokein(ii).trials(jj).times(kk);
                         
                         if inptime<cueon && outtime>cueoff
-                            pokduration{pp,ii}(jj) = 10;
+                            pokduration{pp,ii}(jj) = cueoff-cueon;
                         elseif inptime<cueon && outtime>cueon && outtime<cueoff
                             pokduration{pp,ii}(jj) = pokduration{pp,ii}(jj)+ outtime-cueon;
                         elseif inptime>cueon && inptime<cueoff && outtime>cueoff
@@ -450,7 +452,7 @@ for pp=1:max(size(subtype))
             
         end
         
-    catch ME
+    catch ME2
     end
     
     %%%get correct variable names    
