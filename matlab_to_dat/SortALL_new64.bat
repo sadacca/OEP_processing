@@ -116,7 +116,7 @@ FOR /D %%g IN ("*") DO (
 		IF exist "*.dat" (
 			REM # don't bother to sort if you've got sorted data
 			
-			klusta --overwrite params2.prm
+			klusta --overwrite newparams2.prm
 		
 		)
 
