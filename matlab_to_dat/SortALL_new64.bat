@@ -136,16 +136,20 @@ exit
 	:whileLoopStart
 	
 	REM # if you've got your datafile, end this crazy train
-    if exist "*.dat" GOTO :breakLoop
-	
-	REM # otherwise, wait for a bit	and return to the beginning
+   	REM ### if exist "*2.dat" GOTO :breakLoop NOT GOOD ENOUGH, MATLAB MAKES FILES WHEN ITS READY TO WRITE
 	timeout 60
+	tasklist /fi "imagename eq matlab.exe" |find ":" > nul
+	if not errorlevel 1 GOTO :breakLoop	
+
+    timeout 60
+	
 	@echo waiting for file production
 	
 	GOTO :whileLoopStart
-	@echo done waiting gettin ready to exit
+	
 	REM # if we're done (whileEnd)
 	:breakLoop
+	@echo done waiting gettin ready to exit
 	exit /b
 	
 	
