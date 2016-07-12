@@ -42,7 +42,7 @@ filename = dir('*CH*.continuous');
     
     %create a common average reference
     
-    ref_channel = squeeze(mean(incoming_data,1,'native'));
+    ref_channel = squeeze(sum(incoming_data,1,'double')/size(incoming_data,1));
     
     % subtract the mean from all channels
     
@@ -54,21 +54,12 @@ filename = dir('*CH*.continuous');
     
     %% Design and apply the bandpass filter
     
-    %fs = info_continuous.header.sampleRate; % sampling frequency
-    
-    %fcutlow  = 60;
-    %fcuthigh = 8000;
-    
-%     d = designfilt('highpassiir', ...       % Response type
-%         'StopbandFrequency',fcutlow, ...     % Frequency constraints
-%         'PassbandFrequency',fcutlow+100, ...
-%         'StopbandAttenuation',40, ...    % Magnitude constraints
-%         'PassbandRipple',.3, ...
-%         'DesignMethod','cheby1', ...     % Design method
-%         'MatchExactly','stopband', ...   % Design method options
-%         'SampleRate',fs);               % Sample rate
+samp=25000;          % Sample rate in ms
      
-    [b,a] = butter(4, [0.007 0.5]);
+low_cut = 150;       % in hz
+low_butter=low_cut/samp;
+butter_order = 2;
+    [b,a] = butter(butter_order, [low_butter 0.5]);
 
     for ii = 1:length(fileindex)
         
@@ -79,8 +70,8 @@ filename = dir('*CH*.continuous');
         
         %% chop out all the big stuff: set hard floors and ceilings @ +/- 200
         
-        x(x>800)=800;
-        x(x<-800)=-800;
+        x(x>800)=0;
+        x(x<-800)=0;
         
         incoming_data(ii,:)=int16(x);
         
