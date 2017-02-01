@@ -16,6 +16,9 @@ initial data processing scripts and functions for wrangling open-ephys data form
 * parameters template file with parameters for both the new and old 'klusta/phy' versions of spikedetekt and klustakwik
 
 * post-clustering spike-time and waveform shape extraction from klustaviewa/klustakwik .kwik and .kwx
+	-for use with both old (pre 2016) and curent .kwik flies
+
+* post spike-detection scripts for taking raw (filtered) spike times and waveforms in a format convenient for loading into MClust tetrode-based spike sorting
 
 * batch file for pre-processing, detecting spikes, and clustering 'raw' data from a handful of directories with a single click 
 

@@ -38,22 +38,22 @@ for hh = 1:headstage_num
     
     
     %initialize a big matrix for the data
-    incoming_data = zeros(32,length(first_channel),'int16');
+    incoming_data = zeros(32,length(first_channel(1:1000000)),'int16');
     
     %write the first channel to the full data matrix
-    incoming_data(1,:)= int16(first_channel);
+    incoming_data(1,:)= int16(first_channel(1:1000000));
     
     clear first_channel
+    clear timestamps
     
     for ii = 2:32 %repeat for the remainder of channels
         
         [next_channel, ~, ~] = load_open_ephys_data_faster(filename(fileorder(ii+hh*32-32)).name);
         
-        incoming_data(ii,:)=int16(next_channel);
+        incoming_data(ii,:)=int16(next_channel(1:1000000));
         
     end
     
-    clear timestamps,
     clear next_channel
     
     %create a common average reference

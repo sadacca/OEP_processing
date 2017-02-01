@@ -26,7 +26,7 @@ end
 ismua = find(clustergroup == 1)-1;
 isgood = find(clustergroup == 2)-1;
 
- isgood  = [isgood,ismua]; %uncomment if you want to treat mua as good
+ isgood  = [isgood]; %uncomment if you want to treat mua as good
 
 % extract all spiketimes from *.kwik file
 
@@ -43,7 +43,7 @@ end
 %%get ready to extract select waveforms
 datFilename = [filename(1:end-4),'dat'];
 chansToExtract = [1 2 3 4]+(pr*4);
-window = [-25 50];
+window = [-25 25];
 nToRead = 100;
 chansInDat = 32;
 
@@ -62,13 +62,15 @@ for cl = 1:length(isgood)
 filtmeanWF = filtfilt(B,A,meanWF(chansToExtract,:)');
 allWF = allWF(chansToExtract,:,:);
         spike(clusterindex(cl)).waves = allWF;
+        figure; plot(1000*window(1)/(fs):1000/(fs):1000*window(2)/(fs),filtmeanWF)
+        xlabel('ms'),ylabel('mV')
         spike(clusterindex(cl)).filtmwave = filtmeanWF;
 
 end
 end
 
 %% save  the spike file
-
-%save([filedirectory(end-25:end-1),'_extracted_tms_and_wvs.mat'],'spike')
+cd ..
+save([filedirectory(end-9:end-1),'_extracted_tms_and_wvs.mat'],'spike')
 
 
