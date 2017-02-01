@@ -19,9 +19,9 @@ OEPoff=timestamps((info_events.eventId == 1) & (info_events.eventType == 3));
     
     
 
-save([filedirectory,'_extracted_event_times.mat'],'OEP*')
+save([filedirectory,'_extracted_event_times.mat'],'OEP*','timestamps')
 
-exit
+%exit
 end
 
 

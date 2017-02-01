@@ -17,7 +17,7 @@ recording_9to16=zeros(length(filename),1);
 
 trialtype = input(['what kind of sessions are these? shaping==1, precond.==2, cond.==3, probe==4, savings==5: ']);
 
-runtype = input(['what run number are these? 1, 2, or 3?: ']);
+runtype = input(['what run number are these? 1:3(vta), 4(ofc),or 7(cocaine)?: ']);
 
 if maninput   % Manually assign cue number for each session, in light of counterbalancing
     if runtype == 1;
@@ -222,9 +222,9 @@ for pp=1:max(size(subtype))
     
     %% split the spikes into trials on the basis of events
     
-    
+    clear what*
     ct(1:4)=0;
-    
+    whattrialisthis=zeros(size(trialend_strobed));
     if cuesortflag
         for tr = 1:length(trialend_strobed)
             if trialtype ==2
@@ -391,7 +391,12 @@ for pp=1:max(size(subtype))
                 
                 pokeout(st).trials(ct(st)).times=[];
             end
+            
+                %% mark_which_trial_is_which for
+   
+        whattrialisthis(tr) = st;
         end
+    
     end
     
     
@@ -456,8 +461,17 @@ for pp=1:max(size(subtype))
     end
     
     %%%get correct variable names    
-    % for pokes
+    % for pokes and whats
     neural_var_names=whos('poke*');
+    for vv = 1:length(neural_var_names)
+        assignin('base',[neural_var_names(vv).name,'_',filename{pp}(1:4)]...
+            ,[])
+        
+        evalin('base',[neural_var_names(vv).name,'_',filename{pp}(1:4),'=',neural_var_names(vv).name])
+        clear(evalin('base','neural_var_names(vv).name'))
+    end
+    
+    neural_var_names=whos('what*');
     for vv = 1:length(neural_var_names)
         assignin('base',[neural_var_names(vv).name,'_',filename{pp}(1:4)]...
             ,[])
@@ -471,7 +485,7 @@ for pp=1:max(size(subtype))
     
     %% save data appropriately
     try
-        save([filename{pp}(1:end-4),'_justBEH_',num2str(trialtype),'.mat'],'poke*')
+        save([filename{pp}(1:end-4),'_BEH_and_trialindex_',num2str(trialtype),'.mat'],'poke*','what*')
     catch ME
         try
             save([filename{pp}(1:end-4),'_justBEH_',num2str(trialtype),'.mat'],'poke*')
