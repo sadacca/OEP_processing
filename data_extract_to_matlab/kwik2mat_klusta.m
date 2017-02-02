@@ -49,8 +49,11 @@ chansInDat = 32;
 
 %% butter to filter data
 fs = 25000;
-Wn = (200/(fs/2));
-[B,A] = butter(5,Wn,'high');
+
+Wp = [ 500 8000] * 2 / fs; % pass band for filtering
+Ws = [ 300 10000] * 2 / fs; % transition zone
+[N,Wn] = buttord( Wp, Ws, 3, 20); % determine filter parameters
+[B,A] = butter(N,Wn); % builds filter
 
 %slice out good waveforms into a spike.wave data structure
 for cl = 1:length(isgood)
