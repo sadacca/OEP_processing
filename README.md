@@ -22,6 +22,8 @@ initial data processing scripts and functions for wrangling open-ephys data form
 
 * batch file for pre-processing, detecting spikes, and clustering 'raw' data from a handful of directories with a single click 
 
+* simple plotting of spike waveforms across tetrodes for sorting validation, with adjustable bandpass filtering of waveforms   
+
 * additional batch files for moving or deleting extranious data (.AUX files) across all subdirectories
 
 * event extraction from open-ephys *.event files, MED-PC 'text' files, and lab standard *.tst files
