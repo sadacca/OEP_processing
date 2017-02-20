@@ -28,3 +28,5 @@ initial data processing scripts and functions for wrangling open-ephys data form
 
 * event extraction from open-ephys *.event files, MED-PC 'text' files, and lab standard *.tst files
 
+* matlab code to convert spikedetekt // klusta // phy output to plexon's offlinesorter for data validation via neuroexplorer .nex files
+
