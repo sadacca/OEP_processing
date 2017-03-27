@@ -13,7 +13,7 @@
 %%  find the file
 [filename,filedirectory]=uigetfile('*.kwik');
 
-% create a butterworth filter to filter data
+% create a butterworth filter to filter waveform data
 fs = 25000;  %sample frequency
 lowfreqcut = 325; %where to put the cutoff on the highpass filter
 
