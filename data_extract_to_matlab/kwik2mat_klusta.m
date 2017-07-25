@@ -26,7 +26,7 @@ end
 ismua = find(clustergroup == 1)-1;
 isgood = find(clustergroup == 2)-1;
 
- isgood  = [isgood]; %uncomment if you want to treat mua as good
+ isgood  = [isgood, ismua]; %uncomment if you want to treat mua as good
 
 % extract all spiketimes from *.kwik file
 
@@ -74,6 +74,6 @@ end
 
 %% save  the spike file
 cd ..
-save([filedirectory(end-9:end-1),'_extracted_tms_and_wvs.mat'],'spike')
+save([filedirectory(end-4:end-1),'_extracted_tms_and_wvs.mat'],'spike')
 
 
