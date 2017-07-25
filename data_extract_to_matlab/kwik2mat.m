@@ -18,9 +18,11 @@ allclusters = unique(clusternumbers);
 
 clustergroup = zeros(1,max(allclusters));
 
+ac_ct=0;
 for ac = allclusters'
+    ac_ct = ac_ct+1;
     thiscluster = num2str(ac);
-    clustergroup(ac) = h5readatt([filename(1:end-3),'wik'], ['/channel_groups/',probe,'/clusters/main/',thiscluster],'cluster_group');
+    clustergroup(ac_ct) = h5readatt([filename(1:end-3),'wik'], ['/channel_groups/',probe,'/clusters/main/',thiscluster],'cluster_group');
 end
 
 ismua = find(clustergroup == 1);
