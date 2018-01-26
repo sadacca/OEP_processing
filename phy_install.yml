@@ -1,0 +1,44 @@
+name: phy
+channels: !!python/tuple
+- defaults
+dependencies:
+- cycler=0.10.0=py35_0
+- cython=0.25.1=py35_0
+- h5py=2.6.0=np111py35_2
+- hdf5=1.8.15.1=vc14_4
+- jpeg=8d=vc14_2
+- libpng=1.6.22=vc14_0
+- libtiff=4.0.6=vc14_2
+- matplotlib=1.5.1=np111py35_0
+- mkl=11.3.3=1
+- numpy=1.11.2=py35_0
+- openssl=1.0.2j=vc14_0
+- pip=9.0.1=py35_1
+- pyparsing=2.1.4=py35_0
+- pyqt=4.11.4=py35_7
+- python=3.5.2=0
+- python-dateutil=2.6.0=py35_0
+- pytz=2016.10=py35_0
+- qt=4.8.7=vc14_9
+- scipy=0.18.1=np111py35_0
+- setuptools=27.2.0=py35_1
+- sip=4.18=py35_0
+- six=1.10.0=py35_0
+- tk=8.5.18=vc14_0
+- vs2015_runtime=14.0.25123=0
+- wheel=0.29.0=py35_0
+- zlib=1.2.8=vc14_3
+- pip:
+  - click==6.6
+  - decorator==4.0.10
+  - ipython-genutils==0.1.0
+  - joblib==0.10.3
+  - klusta==3.0.15
+  - klustakwik2==0.2.6
+  - phy==1.0.9
+  - phycontrib==1.0.15
+  - requests==2.12.3
+  - tqdm==4.10.0
+  - traitlets==4.3.1
+  - vispy==0.4.0
+prefix: C:\Miniconda3\envs\phy
